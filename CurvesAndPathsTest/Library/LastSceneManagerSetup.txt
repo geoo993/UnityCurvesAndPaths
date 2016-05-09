@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Lines.unity
+- path: Assets/Scenes/LinesAndCurvesWithLineRenderer.unity
   isLoaded: 1
   isActive: 1

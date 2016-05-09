@@ -59,6 +59,7 @@ public class BezierCurveInspector : Editor {
 		//Handles.DrawLine(lineStart, lineStart + curve.GetDirection(0f)); ////type2
 
 		for (int i = 1; i <= lineSteps; i++) {
+			
 			Vector3 lineEnd = curve.GetPoint(i / (float)lineSteps);
 			Handles.color = Color.white;
 			Handles.DrawLine(lineStart, lineEnd);
@@ -77,7 +78,8 @@ public class BezierCurveInspector : Editor {
 		//Handles.color = Color.green;
 		Vector3 point = curve.GetPoint(0f);
 		Handles.DrawLine(point, point + curve.GetDirection(0f) * directionScale);
-		for (int i = 1; i <= lineSteps; i++) {
+		for (int i = 1; i <= lineSteps; i++) 
+		{
 			point = curve.GetPoint(i / (float)lineSteps);
 			//Handles.DrawLine(point, point + curve.GetDirection(i / (float)lineSteps) * directionScale);
 		}
