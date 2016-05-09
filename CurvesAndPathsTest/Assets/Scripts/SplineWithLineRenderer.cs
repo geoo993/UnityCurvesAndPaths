@@ -8,11 +8,23 @@ public class SplineWithLineRenderer : MonoBehaviour {
 	[SerializeField] private bool loop;
 
 	public GameObject sphere;
-	private GameObject walker;
+	private GameObject diamond;
+	private GameObject torus;
+	[Range(10f,100f)] public int itemsFrequency;
 	[Range(10f,100f)] public float duration = 10f;
+
+	public bool stopMovement;
+	public bool curvesControlPoints = false;
+	private List<Transform> Objects = new List<Transform> ();
+
+	private List<float> progressTimes = new List<float>();
+
 	private float progress = 0f;
-	public bool lookForward = true;
+	private bool lookForward = true;
 	private bool goingForward = true;
+
+	private List<Transform> items = new List<Transform>();
+
 	public enum WalkerMode {
 		Once,
 		Loop,
@@ -28,59 +40,39 @@ public class SplineWithLineRenderer : MonoBehaviour {
 
 	void Start ()
 	{
-		walker = GameObject.Find("Diamond");
+		this.name = "Roller coaster";
+
+		diamond = GameObject.Find("Diamond");
+		torus = GameObject.Find("Torus");
 		SetupLineRenderer ();
 		generateSpheres ();
 
+
+		AddItems ();
 
 	}
 	private void Update () {
 		
 		AddCurves ();
+		ShowControlPoints ();
 
-		if (goingForward) {
-			progress += Time.deltaTime / duration;
-			if (progress > 1f) {
-			
-				if (walkerMode == WalkerMode.Once) {
-					progress = 1f;
-				}
-				else if (walkerMode == WalkerMode.Loop) {
-					progress -= 1f;
-				}
-				else {
-					progress = 2f - progress;
-					goingForward = false;
-				}
-			}
-		}
-		else {
-			progress -= Time.deltaTime / duration;
-			if (progress < 0f) {
-				progress = -progress;
-				goingForward = true;
-			}
-		}
-
-		Vector3 position = GetPoint(progress);
-		walker.transform.localPosition = position;
-
-		if (lookForward) {
-			walker.transform.LookAt(position + GetDirection(progress));
-		}
-
-
+		MoveWalker (diamond);
+		MoveWalker (torus);
+		MoveItems ();
 	}
+
 
 	void generateSpheres()
 	{
 		
 		for (int i = 0; i <= 30; i++) {
-			Vector3 rand = new Vector3 (Random.Range (-100, 100), Random.Range (0, 100), Random.Range (-100, 100));
+			Vector3 rand = new Vector3 (Random.Range (-200, 200), Random.Range (0, 200), Random.Range (-200, 200));
 			createSphere (rand, points);
+
 		}
-		print (points.Count);
+		//print (points.Count);
 	}
+
 
 	private GameObject createSphere(Vector3 pos , List <GameObject> arr){
 
@@ -88,6 +80,7 @@ public class SplineWithLineRenderer : MonoBehaviour {
 		a.GetComponent<Renderer> ().material.color = ExtensionMethods.RandomColor();
 		a.transform.parent = this.transform;
 		arr.Add (a);
+
 
 		return a;
 	}
@@ -125,6 +118,113 @@ public class SplineWithLineRenderer : MonoBehaviour {
 
 	}
 		
+
+	private void MoveWalker( GameObject walker)
+	{
+		if (goingForward) {
+			progress += Time.deltaTime / duration;
+			if (progress > 1f) {
+
+				if (walkerMode == WalkerMode.Once) {
+					progress = 1f;
+				}
+				else if (walkerMode == WalkerMode.Loop) {
+					progress -= 1f;
+				}
+				else {
+					progress = 2f - progress;
+					goingForward = false;
+				}
+			}
+		}
+		else {
+			progress -= Time.deltaTime / duration;
+			if (progress < 0f) {
+				progress = -progress;
+				goingForward = true;
+			}
+		}
+
+		Vector3 position = GetPoint(progress);
+		walker.transform.localPosition = position;
+
+		if (lookForward) {
+			
+			walker.transform.LookAt(position + GetDirection(progress));
+		}
+	}
+	private void AddItems(){
+
+		items.Add (diamond.transform);
+		items.Add (torus.transform);
+
+		if (itemsFrequency <= 0 || items == null || items.Count == 0) {
+			return;
+		}
+		float stepSize = itemsFrequency * items.Count;
+		if (loop || stepSize == 1) {
+			stepSize = 1f / stepSize;
+		}
+		else {
+			stepSize = 1f / (stepSize - 1);
+		}
+
+
+		//float stepSize = 1f / (frequency * items.Length);
+		for (int p = 0, f = 0; f < itemsFrequency; f++) {
+			for (int i = 0; i < items.Count; i++, p++) {
+
+				//print (p * stepSize);
+
+				Transform item = Instantiate(items[i]) as Transform;
+				Vector3 position = GetPoint(p * stepSize);
+				item.transform.localPosition = position;
+				if (lookForward) {
+					item.transform.LookAt(position + GetDirection(p * stepSize));
+				}
+				item.transform.parent = transform;
+
+				Objects.Add (item);
+
+				progressTimes.Add (p * stepSize);
+
+			}
+		}
+	}
+	private void MoveItems()
+	{
+		if (!stopMovement) {
+
+			for (int i = 0; i < Objects.Count; i++) {
+
+				progressTimes [i] += Time.deltaTime / duration;
+				if (progressTimes [i] > 1f) {
+					
+					if (walkerMode == WalkerMode.Once)  {
+						progressTimes [i] = 1f;
+					} else if (walkerMode == WalkerMode.Loop)  {
+						progressTimes [i] -= 1f;
+					} 
+				}
+
+				Vector3 position = GetPoint (progressTimes [i]);
+				Objects [i].localPosition = position;
+				if (lookForward) {
+					Objects [i].LookAt(position + GetDirection(progressTimes [i]));
+				}
+			}
+		}
+
+	}
+
+	private void ShowControlPoints() {
+
+		for (int i = 0; i < points.Count; i++) {
+			
+			points [i].transform.localScale = curvesControlPoints ?  new Vector3 (5f, 5f, 5f) : Vector3.zero;
+			//a.active = false;
+		}
+	}
 
 	public int CurveCount {
 		get {
