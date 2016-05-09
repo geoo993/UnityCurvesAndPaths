@@ -11,8 +11,8 @@ public class TorusShape : MonoBehaviour {
 
 	[Range(1f, 10f)] public float ringRadius = 1f;
 	[Range(0.05f, 1f)]public float pipeRadius = 0.3f;
-	[Range(8, 72)] public int ringSegments = 24; // radius segments count
-	[Range(8, 72)] public int pipeSegments = 50;//18 // also known as side segments count
+	[Range(8, 72)] public int ringSegments = 24; // radius segments count or radial segments
+	[Range(8, 72)] public int pipeSegments = 50;//18 // also known as side segments count or 
 
 	private Color color;
 
