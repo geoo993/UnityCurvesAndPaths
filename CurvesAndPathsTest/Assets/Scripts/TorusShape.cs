@@ -63,8 +63,10 @@ public class TorusShape : MonoBehaviour {
 		mesh.Clear ();
 
 
+		int vertexCount = (ringSegments + 1) * (pipeSegments + 1);
+
 		#region Vertices		
-		Vector3[] vertices = new Vector3[(ringSegments + 1) * (pipeSegments + 1)];
+		Vector3[] vertices = new Vector3[vertexCount];
 
 		float _2pi = Mathf.PI * 2f;
 		for (int seg = 0; seg <= ringSegments; seg++) {
@@ -78,7 +80,7 @@ public class TorusShape : MonoBehaviour {
 				
 				int currSide = side == pipeSegments ? 0 : side;
 
-				//Vector3 normale = Vector3.Cross (r1, Vector3.left);
+				Vector3 normale = Vector3.Cross (r1, Vector3.forward);
 				float t2 = (float)currSide / pipeSegments * _2pi;
 				Vector3 r2 =  Quaternion.AngleAxis (-t1 * Mathf.Rad2Deg, Vector3.forward) * new Vector3 (0f, Mathf.Sin (t2) * pipeRadius, Mathf.Cos (t2) * pipeRadius);
 
@@ -131,23 +133,32 @@ public class TorusShape : MonoBehaviour {
 					triangles [i++] = current;
 					triangles [i++] = next + 1;
 					triangles [i++] = current + 1;
+				
 				}
 			}
 		}
 		#endregion
+
+
 
 		mesh.vertices = vertices;
 		mesh.normals = normales;
 		mesh.uv = uvs;
 		mesh.triangles = triangles;
 
-		mesh.RecalculateBounds ();
-		mesh.Optimize ();
+
+		mesh.RecalculateNormals();
+		CalculateTangent.TangentSolver (mesh);
+
+		mesh.RecalculateBounds();
+		mesh.Optimize();
 
 
 		MeshRenderer renderer = GetComponent<MeshRenderer> ();
 		renderer.material.color = color;
 
 	}
+
+
 
 }

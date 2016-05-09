@@ -109,6 +109,12 @@ public class TorusWithArc : MonoBehaviour {
 		mesh.uv = uvs.ToArray();
 		mesh.triangles = triangles.ToArray();
 
+		mesh.RecalculateNormals();
+		CalculateTangent.TangentSolver (mesh);
+
+		mesh.RecalculateBounds();
+		mesh.Optimize();
+
 		MeshRenderer renderer = GetComponent<MeshRenderer> ();
 		renderer.material.color = color;
 

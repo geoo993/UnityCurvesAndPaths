@@ -40,7 +40,7 @@ public class SplineWithLineRenderer : MonoBehaviour {
 
 	void Start ()
 	{
-		this.name = "Roller coaster";
+		this.name = "Roller Coaster";
 
 		diamond = GameObject.Find("Diamond");
 		torus = GameObject.Find("Torus");

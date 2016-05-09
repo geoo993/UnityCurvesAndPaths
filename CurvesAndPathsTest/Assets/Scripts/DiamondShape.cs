@@ -265,6 +265,7 @@ public class DiamondShape : MonoBehaviour {
 
 		mesh.RecalculateNormals();
 		mesh.RecalculateBounds();
+		CalculateTangent.TangentSolver (mesh);
 		mesh.Optimize();
 
 

@@ -39,7 +39,7 @@ public class TorusKnot : MonoBehaviour {
 
 		List<Vector2> uvs = new List<Vector2>();
 		List<Vector3> vertices = new List<Vector3>();
-		//List<Vector3> normals = new List<Vector3>();
+		List<Vector3> normals = new List<Vector3>();
 		List<int> triangles = new List<int>();
 
 		var center = new Vector3();
@@ -85,13 +85,17 @@ public class TorusKnot : MonoBehaviour {
 				var cx = -tube * Mathf.Cos(v); 
 				var cy = tube * Mathf.Sin(v);
 
-				var pos = new Vector3();
-				pos.x = p1.x + cx * n.x + cy * bitan.x;
-				pos.y = p1.y + cx * n.y + cy * bitan.y;
-				pos.z = p1.z + cx * n.z + cy * bitan.z;
+				var vertex = new Vector3();
+				vertex.x = p1.x + cx * n.x + cy * bitan.x;
+				vertex.y = p1.y + cx * n.y + cy * bitan.y;
+				vertex.z = p1.z + cx * n.z + cy * bitan.z;
 
-				vertices.Add(pos);
+				vertices.Add(vertex);
 				uvs.Add(new Vector2(i/(float) radialSegments, j/(float) tubularSegments));
+
+				Vector3 normal = vertex - center;
+				normal.Normalize();
+				normals.Add(normal);
 
 				grid[i][j] = vertices.Count - 1;
 			}
@@ -124,12 +128,18 @@ public class TorusKnot : MonoBehaviour {
 
 
 		mesh.vertices = vertices.ToArray();
-		//mesh.normals = normals.ToArray();
+		mesh.normals = normals.ToArray();
 		mesh.uv = uvs.ToArray();
 		mesh.triangles = triangles.ToArray();
 
-		MeshRenderer renderer = GetComponent<MeshRenderer> ();
-		renderer.material.color = color;
+		mesh.RecalculateNormals();
+		CalculateTangent.TangentSolver (mesh);
+
+		mesh.RecalculateBounds();
+		mesh.Optimize();
+
+		//MeshRenderer renderer = GetComponent<MeshRenderer> ();
+		//renderer.material.color = color;
 
 
 	}
