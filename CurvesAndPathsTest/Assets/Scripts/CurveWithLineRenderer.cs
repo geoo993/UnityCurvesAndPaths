@@ -19,7 +19,7 @@ public class CurveWithLineRenderer: MonoBehaviour {
 
 	public GameObject[] points;
 
-	private const int lineSteps = 10;
+	private const int steps = 10;
 	private const float directionScale = 0.5f;
 
 	void Start ()
@@ -149,7 +149,7 @@ public class CurveWithLineRenderer: MonoBehaviour {
 		lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
 		lineRenderer.SetColors(Color.red, Color.green);
-		lineRenderer.SetWidth(0.2F, 0.2F);
+		lineRenderer.SetWidth(1f, 1f);
 
 
 	}
@@ -175,7 +175,7 @@ public class CurveWithLineRenderer: MonoBehaviour {
 	void DrawCurve ()
 	{
 		
-		lineRenderer.SetVertexCount(lineSteps+1);
+		lineRenderer.SetVertexCount(steps+1);
 		Vector3 lineStart = GetPoint(0f);
 
 
@@ -185,9 +185,9 @@ public class CurveWithLineRenderer: MonoBehaviour {
 			lineRenderer.SetPosition(0, lineStart);
 
 
-			for (int i = 1; i <= lineSteps; i++) {
+			for (int i = 1; i <= steps; i++) {
 
-				Vector3 lineEnd = GetPoint(i / (float)lineSteps);
+				Vector3 lineEnd = GetPoint(i / (float)steps);
 				lineRenderer.SetPosition (i  , lineEnd);
 
 			}
@@ -196,14 +196,17 @@ public class CurveWithLineRenderer: MonoBehaviour {
 		case BezierType.Cubic:
 			lineRenderer.SetPosition(0, lineStart + GetDirection(0f) * directionScale);
 		
-			for (int i = 1; i <= lineSteps; i++) {
-				Vector3 lineEnd = GetPoint(i / (float)lineSteps);
+			for (int i = 1; i <= steps; i++) {
+				Vector3 lineEnd = GetPoint(i / (float)steps);
 			
 				lineRenderer.SetPosition (i  , lineEnd);
 			}
 
 			break;
 		}
+
+
+
 
 
 	}
