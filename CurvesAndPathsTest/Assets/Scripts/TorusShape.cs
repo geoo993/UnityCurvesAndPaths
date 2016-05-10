@@ -23,22 +23,22 @@ public class TorusShape : MonoBehaviour {
 
 
 	}
-	private void windowsArray (){
-
-		int[] arr = new int[51];
-
-		for (int i = 0; i < 51; i++) {
-
-			arr[i] = i;
-			//print (arr[i]);
-		}
-
-		for (int a = 0; a < arr.Length/3; a++) {
-
-			print(a * 3);
-		}
-
-	}
+//	private void windowsArray (){
+//
+//		int[] arr = new int[51];
+//
+//		for (int i = 0; i < 51; i++) {
+//
+//			arr[i] = i;
+//			//print (arr[i]);
+//		}
+//
+//		for (int a = 0; a < arr.Length/3; a++) {
+//
+//			print(a * 3);
+//		}
+//
+//	}
 	private void Update ()
 	{
 		CreateTorus ();	
