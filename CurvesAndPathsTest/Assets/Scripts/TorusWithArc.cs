@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 public class TorusWithArc : MonoBehaviour {
 
+	public Color[] colourArray = new Color[256];
 
 	[Range(1f, 10f)] public float radius = 1f; ////ringRadius
 	[Range(0.05f, 1f)]public float tube = 0.3f; ////pipeRadius
@@ -18,6 +19,8 @@ public class TorusWithArc : MonoBehaviour {
 	[Range(0.0f, 6.28f)] public float arc = 4f;
 
 	private Color color;
+
+	private Gradient gradientColor = new Gradient();
 
 	void Start ()
 	{
@@ -115,12 +118,51 @@ public class TorusWithArc : MonoBehaviour {
 		mesh.RecalculateBounds();
 		mesh.Optimize();
 
-		MeshRenderer renderer = GetComponent<MeshRenderer> ();
-		renderer.material.color = color;
+		//MeshRenderer renderer = GetComponent<MeshRenderer> ();
+		//renderer.material.color = color;
 
+		//addColorTexture (renderer);
 
 		//print (vertices.Count);
 
+
+
 	}
 
+
+	private void addColorTexture( MeshRenderer renderer)
+	{
+		Texture2D colourPalette = new Texture2D(256, 256, TextureFormat.ARGB32, false);
+
+		for(int x = 0; x < 256; x++){
+			for(int y = 0; y < 256; y++){
+				addGradient (gradientColor);
+				colourPalette.SetPixel(x,y, gradientColor.Evaluate(0.5f));
+			}
+		}
+		colourPalette.filterMode = FilterMode.Point;
+		colourPalette.wrapMode = TextureWrapMode.Clamp;
+		colourPalette.Apply();
+		renderer.material.SetTexture("_ColorRamp",colourPalette);
+	}
+
+	private void addGradient (Gradient g)
+	{
+
+		GradientColorKey blue = new GradientColorKey(Color.blue, 0.0f);
+		GradientColorKey white = new GradientColorKey(Color.white, 0.3f);
+		GradientColorKey black = new GradientColorKey(Color.black, 0.45f);
+		GradientColorKey yellow = new GradientColorKey(Color.yellow, 0.6f);
+		GradientColorKey red = new GradientColorKey(Color.red, 1f);
+
+		GradientAlphaKey blueAlpha = new GradientAlphaKey(1,0);
+		GradientAlphaKey yellowAlpha = new GradientAlphaKey(1,1);
+
+
+		GradientColorKey[] colorKeys = new GradientColorKey[]{blue, white, black, yellow, red};
+		GradientAlphaKey[] alphaKeys = new GradientAlphaKey[]{blueAlpha,yellowAlpha};
+		g.SetKeys(colorKeys, alphaKeys);
+
+
+	}
 }

@@ -154,8 +154,8 @@ public class TorusShape : MonoBehaviour {
 		mesh.Optimize();
 
 
-		MeshRenderer renderer = GetComponent<MeshRenderer> ();
-		renderer.material.color = color;
+		//MeshRenderer renderer = GetComponent<MeshRenderer> ();
+		//renderer.material.color = color;
 
 	}
 
