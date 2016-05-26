@@ -10,12 +10,12 @@ using System.Collections.Generic;
 public class TorusKnot : MonoBehaviour {
 
 
-	[Range(1f, 10f)] public float radius = 1f; ////ringRadius
-	[Range(0.05f, 1f)]public float tube = 0.3f; ////pipeRadius
-	[Range(10, 200)] public int radialSegments = 24; // radius segments count or radial segments ////ringSegments
-	[Range(10, 100)] public int tubularSegments = 50;//18 // also known as side segments count or ////pipeSegments
+	[Range(1f, 50f)] public float radius = 1f; ////ringRadius
+	[Range(0.05f, 5f)]public float tube = 0.3f; ////pipeRadius
+	[Range(10, 500)] public int radialSegments = 24; // radius segments count or radial segments ////ringSegments
+	[Range(10, 200)] public int tubularSegments = 50;//18 // also known as side segments count or ////pipeSegments
 
-	[Range(0.0f, 5f)] public float heightScale = 4f;
+	[Range(0.0f, 10f)] public float heightScale = 4f;
 	[Range(1, 10)] public int p = 4; 
 	[Range(1, 10)] public int q = 6;
 
@@ -140,6 +140,7 @@ public class TorusKnot : MonoBehaviour {
 
 		//MeshRenderer renderer = GetComponent<MeshRenderer> ();
 		//renderer.material.color = color;
+
 
 
 	}
