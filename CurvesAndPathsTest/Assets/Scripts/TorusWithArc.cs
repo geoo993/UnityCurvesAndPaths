@@ -126,7 +126,6 @@ public class TorusWithArc : MonoBehaviour {
 		//print (vertices.Count);
 
 
-
 	}
 
 
