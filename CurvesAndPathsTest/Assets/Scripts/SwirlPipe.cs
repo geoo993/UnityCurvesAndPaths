@@ -15,7 +15,18 @@ public class SwirlPipe : MonoBehaviour {
 	[Range(1,360)] public float xRotation;
 
 	private float curveRadius;
+	public float CurveRadius {
+		get {
+			return curveRadius;
+		}
+	}
+
 	private float curveAngle;
+	public float CurveAngle {
+		get {
+			return curveAngle;
+		}
+	}
 
 	private Mesh mesh;
 	private Vector3[] vertices;
@@ -131,6 +142,7 @@ public class SwirlPipe : MonoBehaviour {
 		p.x = r * Mathf.Sin(u);
 		p.y = r * Mathf.Cos(u);
 		p.z = pipeRadius * Mathf.Sin(v);
+
 		return p;
 	}
 
@@ -173,7 +185,7 @@ public class SwirlPipe : MonoBehaviour {
 		transform.Rotate(relativeRotation, 0f, 0f);
 		transform.Translate(0f, -curveRadius, 0f);
 		transform.SetParent(pipe.transform.parent);
-
 	}
+
 
 }
