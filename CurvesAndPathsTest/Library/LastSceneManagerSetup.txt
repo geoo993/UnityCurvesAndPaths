@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/SwirlPipe.unity
+- path: Assets/Scenes/RollingBall.unity
   isLoaded: 1
   isActive: 1
