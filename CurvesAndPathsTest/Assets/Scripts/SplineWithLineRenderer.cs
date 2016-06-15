@@ -56,9 +56,9 @@ public class SplineWithLineRenderer : MonoBehaviour {
 		AddCurves ();
 		ShowControlPoints ();
 
-		//MoveWalker (diamond);
-		//MoveWalker (torus);
-		//MoveItems ();
+		MoveWalker (diamond);
+		MoveWalker (torus);
+		MoveItems ();
 	}
 
 	private void SetupLineRenderer()
@@ -88,6 +88,7 @@ public class SplineWithLineRenderer : MonoBehaviour {
 		a.GetComponent<Renderer> ().material.color = ExtensionMethods.RandomColor();
 		a.transform.position = pos;
 		a.transform.parent = this.transform;
+		//a.transform.localScale = Vector3.zero;
 		arr.Add (a);
 
 		return a;
@@ -116,41 +117,41 @@ public class SplineWithLineRenderer : MonoBehaviour {
 	}
 		
 
-//	private void MoveWalker( GameObject walker)
-//	{
-//		if (goingForward) {
-//			progress += Time.deltaTime / duration;
-//			if (progress > 1f) {
-//
-//				if (walkerMode == WalkerMode.Once) {
-//					progress = 1f;
-//				}
-//				else if (walkerMode == WalkerMode.Loop) {
-//					progress -= 1f;
-//				}
-//				else {
-//					progress = 2f - progress;
-//					goingForward = false;
-//				}
-//			}
-//		}
-//		else {
-//			progress -= Time.deltaTime / duration;
-//			if (progress < 0f) {
-//				progress = -progress;
-//				goingForward = true;
-//			}
-//		}
-//
-//		Vector3 position = GetPoint(progress);
-//		walker.transform.localPosition = position;
-//
-//		if (lookForward) {
-//			
-//			walker.transform.LookAt(position + GetDirection(progress));
-//		}
-//	}
-//
+	private void MoveWalker( GameObject walker)
+	{
+		if (goingForward) {
+			progress += Time.deltaTime / duration;
+			if (progress > 1f) {
+
+				if (walkerMode == WalkerMode.Once) {
+					progress = 1f;
+				}
+				else if (walkerMode == WalkerMode.Loop) {
+					progress -= 1f;
+				}
+				else {
+					progress = 2f - progress;
+					goingForward = false;
+				}
+			}
+		}
+		else {
+			progress -= Time.deltaTime / duration;
+			if (progress < 0f) {
+				progress = -progress;
+				goingForward = true;
+			}
+		}
+
+		Vector3 position = GetPoint(progress);
+		walker.transform.localPosition = position;
+
+		if (lookForward) {
+			
+			walker.transform.LookAt(position + GetDirection(progress));
+		}
+	}
+
 	private void AddItems(){
 
 		items.Add (diamond.transform);
@@ -191,31 +192,31 @@ public class SplineWithLineRenderer : MonoBehaviour {
 	}
 
 
-//	private void MoveItems()
-//	{
-//		if (!stopMovement) {
-//
-//			for (int i = 0; i < Objects.Count; i++) {
-//
-//				progressTimes [i] += Time.deltaTime / duration;
-//				if (progressTimes [i] > 1f) {
-//					
-//					if (walkerMode == WalkerMode.Once)  {
-//						progressTimes [i] = 1f;
-//					} else if (walkerMode == WalkerMode.Loop)  {
-//						progressTimes [i] -= 1f;
-//					} 
-//				}
-//
-//				Vector3 position = GetPoint (progressTimes [i]);
-//				Objects [i].localPosition = position;
-//				if (lookForward) {
-//					Objects [i].LookAt(position + GetDirection(progressTimes [i]));
-//				}
-//			}
-//		}
-//
-//	}
+	private void MoveItems()
+	{
+		if (!stopMovement) {
+
+			for (int i = 0; i < Objects.Count; i++) {
+
+				progressTimes [i] += Time.deltaTime / duration;
+				if (progressTimes [i] > 1f) {
+					
+					if (walkerMode == WalkerMode.Once)  {
+						progressTimes [i] = 1f;
+					} else if (walkerMode == WalkerMode.Loop)  {
+						progressTimes [i] -= 1f;
+					} 
+				}
+
+				Vector3 position = GetPoint (progressTimes [i]);
+				Objects [i].localPosition = position;
+				if (lookForward) {
+					Objects [i].LookAt(position + GetDirection(progressTimes [i]));
+				}
+			}
+		}
+
+	}
 
 	private void ShowControlPoints() {
 
